@@ -34,13 +34,3 @@ class CovidScraper:
                 newCases.append(text)
 
         return newCases
-
-
-
-scraper = CovidScraper()
-
-scraper.getSite("hungary")
-news = scraper.getNewsText()
-
-for n in news:
-    print(n)
