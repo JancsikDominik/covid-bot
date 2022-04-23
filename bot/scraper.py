@@ -47,6 +47,13 @@ class CovidScraper:
             text = newsDivs[i].text.strip().replace(',', '')
             if not text.isspace():
                 infectedAndDead = [int(s) for s in text.split() if s.isdigit()]
+                #if no new cases were recorded we add a 0
+                if(len(infectedAndDead) == 0):
+                    infectedAndDead.append(0)
+                #if no new deaths were recorded we add a 0
+                if(len(infectedAndDead) == 1):
+                    infectedAndDead.append(0)
+                    
                 newCases.append({"numbers": infectedAndDead, "date": dates[i]})
 
         return newCases
