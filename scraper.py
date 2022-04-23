@@ -35,10 +35,18 @@ class CovidScraper:
     # the array goes from newest update to latest update
     def getNews(self) -> list:
         newCases = []
+        #getting every div that has an id that starts with newsdate
+        dateDivs = self.soup.find_all("div", id=lambda value: value and value.startswith("newsdate"))
+        dates = []
+        for d in dateDivs:
+            #extracting the date from the id (format: newsdate2022-04-23; so we cut the first 8 characters from the string and we are done)
+            dates.append(d.attrs["id"][8:])
+        
         newsDivs = self.soup.find_all("div", {"class": "news_post"})
-        for div in newsDivs:
-            text = div.text.strip().replace(',', '')
+        for i in range(0, len(newsDivs)):
+            text = newsDivs[i].text.strip().replace(',', '')
             if not text.isspace():
-                newCases.append([int(s) for s in text.split() if s.isdigit()])
+                infectedAndDead = [int(s) for s in text.split() if s.isdigit()]
+                newCases.append({"numbers": infectedAndDead, "date": dates[i]})
 
         return newCases
